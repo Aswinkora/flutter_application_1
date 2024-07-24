@@ -9,7 +9,6 @@ class RegistrationForm extends StatefulWidget {
 class _RegistrationFormState extends State<RegistrationForm> {
  
 
-
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
   final TextEditingController houseNumberController = TextEditingController();
@@ -17,6 +16,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final TextEditingController streetController = TextEditingController();
   final TextEditingController placeController = TextEditingController();
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

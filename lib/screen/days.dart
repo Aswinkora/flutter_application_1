@@ -12,7 +12,7 @@ class Days extends StatefulWidget {
 class _DaysState extends State<Days> {
   List list = [
     'ATHAM',
-    'CHITHiRA',
+    'CHITHIRA',
     'CHODHI',
     'VISHAKAM',
     'ANIZHAM',
