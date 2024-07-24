@@ -44,39 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAQJ9jL1jsBFXUr2nnOl9r28WkBDL64so8',
-    appId: '1:1077665653460:web:ff48aac22b02f538039141',
-    messagingSenderId: '1077665653460',
-    projectId: 'onam-e2b3f',
-    authDomain: 'onam-e2b3f.firebaseapp.com',
-    storageBucket: 'onam-e2b3f.appspot.com',
-    measurementId: 'G-3LC2HD9P4L',
+    apiKey: 'AIzaSyBCUKblUCTp6zu7gRpG7QHJ8PwVVIEQ9vk',
+    appId: '1:557985078163:web:1158ffd84b1b0e5504a666',
+    messagingSenderId: '557985078163',
+    projectId: 'shopping-eaeab',
+    authDomain: 'shopping-eaeab.firebaseapp.com',
+    storageBucket: 'shopping-eaeab.appspot.com',
+    measurementId: 'G-LEFJSH5B6J',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB_QE-_lrod16gz-KtYJmiUDv8NNS7exmU',
-    appId: '1:1077665653460:android:278f9bf88fb6485b039141',
-    messagingSenderId: '1077665653460',
-    projectId: 'onam-e2b3f',
-    storageBucket: 'onam-e2b3f.appspot.com',
+    apiKey: 'AIzaSyC_ntex3JSCFUEhgc30fRPmJo3O7FnV--Y',
+    appId: '1:557985078163:android:d1f24910330fd93104a666',
+    messagingSenderId: '557985078163',
+    projectId: 'shopping-eaeab',
+    storageBucket: 'shopping-eaeab.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD078lkIHdubmX5IEqubL2VlBqmps7slIo',
-    appId: '1:1077665653460:ios:bf7835e12215ab9f039141',
-    messagingSenderId: '1077665653460',
-    projectId: 'onam-e2b3f',
-    storageBucket: 'onam-e2b3f.appspot.com',
+    apiKey: 'AIzaSyCoAHO6v6FnxurQ1_x2w5RKclG4BWezxe8',
+    appId: '1:557985078163:ios:8f4f8aa8f12ae28204a666',
+    messagingSenderId: '557985078163',
+    projectId: 'shopping-eaeab',
+    storageBucket: 'shopping-eaeab.appspot.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAQJ9jL1jsBFXUr2nnOl9r28WkBDL64so8',
-    appId: '1:1077665653460:web:46376053ff48856c039141',
-    messagingSenderId: '1077665653460',
-    projectId: 'onam-e2b3f',
-    authDomain: 'onam-e2b3f.firebaseapp.com',
-    storageBucket: 'onam-e2b3f.appspot.com',
-    measurementId: 'G-WH0Y29RTD3',
+    apiKey: 'AIzaSyBCUKblUCTp6zu7gRpG7QHJ8PwVVIEQ9vk',
+    appId: '1:557985078163:web:b3a88cba99d4df8804a666',
+    messagingSenderId: '557985078163',
+    projectId: 'shopping-eaeab',
+    authDomain: 'shopping-eaeab.firebaseapp.com',
+    storageBucket: 'shopping-eaeab.appspot.com',
+    measurementId: 'G-YCE5E65YGW',
   );
 }

@@ -29,7 +29,6 @@ class _UploadScreenState extends State<UploadScreen> {
                       BoxDecoration(borderRadius: BorderRadius.circular(30)),
                   height: 300,
                   width: 300,
-                  //  MediaQuery.of(context).size.width,
                   child: Image.file(
                     widget.image,
                     fit: BoxFit.cover,
