@@ -16,7 +16,7 @@ class _UploadScreenState extends State<UploadScreen> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('images/backgrnd.png'), fit: BoxFit.cover)),
+              image: AssetImage('images/img2.png'), fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
