@@ -10,6 +10,6 @@ void main() async {
   );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Days(),
+    home: Days (),
   ));
 }

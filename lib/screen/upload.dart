@@ -13,22 +13,31 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Center(
-              child: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                height: 300,
-                width: 300,
-                child: Image.file(
-                  widget.image,
-                  fit: BoxFit.cover,
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/backgrnd.png'), fit: BoxFit.cover)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                  height: 300,
+                  width: 300,
+                  //  MediaQuery.of(context).size.width,
+                  child: Image.file(
+                    widget.image,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
