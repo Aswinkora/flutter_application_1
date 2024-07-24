@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/registerform.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -58,7 +59,12 @@ class _LoginState extends State<Login> {
                     Center(
                       child: TextButton(
                         child: Text('Create Account'),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegistrationForm()));
+                        },
                       ),
                     )
                   ],
