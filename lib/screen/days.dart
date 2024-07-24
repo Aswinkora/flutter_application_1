@@ -24,8 +24,8 @@ class _DaysState extends State<Days> {
   ];
   List<DateTime> date = [
     DateTime(2024, 07, 23),
+    DateTime(2024, 07, 22),
     DateTime(2024, 07, 24),
-    DateTime(2024, 07, 25),
     DateTime(2024, 07, 26),
     DateTime(2024, 07, 27),
     DateTime(2024, 07, 28),

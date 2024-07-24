@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/uploadimage.dart';
 
 class UploadScreen extends StatefulWidget {
   final File image;
@@ -35,10 +36,19 @@ class _UploadScreenState extends State<UploadScreen> {
                   ),
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    upload();
+                  },
+                  child: Text('upload'))
             ],
           ),
         ),
       ),
     );
+  }
+
+  void upload() {
+    uploadimage(widget.image);
   }
 }

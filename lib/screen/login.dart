@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/model/register.dart';
+import 'package:flutter_application_1/screen/days.dart';
 import 'package:flutter_application_1/screen/registerform.dart';
 
 class Login extends StatefulWidget {
@@ -9,28 +12,21 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController numcntrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/backgrnd.png'), fit: BoxFit.cover)),
+        image: DecorationImage(
+          image: AssetImage('images/img2.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            // Positioned(
-            //     right: 40,
-            //     left: 0,
-            //     child: Image.asset(
-            //       'images/img.png',
-            //       fit: BoxFit.fill,
-            //     )),
-            // Positioned.fill(
-            //   child: Image.asset(
-            // 'images/img.png',
-            // fit: BoxFit.fill,
-            // )),
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -40,33 +36,43 @@ class _LoginState extends State<Login> {
                   children: [
                     Text(
                       'Login',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Mobilenumber',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(23)),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: numcntrl,
+                      decoration: InputDecoration(
+                        labelText: 'Mobile Number',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(23),
+                        ),
+                      ),
+                      keyboardType: TextInputType.phone,
                     ),
+                    SizedBox(height: 20),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: login,
+                        child: Text('Login'),
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     Center(
                       child: TextButton(
                         child: Text('Create Account'),
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegistrationForm()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegistrationForm(),
+                            ),
+                          );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -75,5 +81,31 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void login() async {
+    String mobileNumber = numcntrl.text.trim();
+    RegisterDatabase db = RegisterDatabase();
+    RegisterModel? user = await db.getdetails(mobileNumber);
+    if (user != null) {
+      print('User found: ${user.username}');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Days()));
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Mobile number not registered'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }

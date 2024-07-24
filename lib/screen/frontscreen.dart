@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_application_1/screen/login.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -8,8 +8,6 @@ class MyApp extends StatelessWidget {
       home: Frontscreen(),
     );
   }
-
-  
 }
 
 class Frontscreen extends StatelessWidget {
@@ -21,7 +19,6 @@ class Frontscreen extends StatelessWidget {
           Container(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              
               Container(
                 height: 200,
                 width: 200,
@@ -40,7 +37,10 @@ class Frontscreen extends StatelessWidget {
                     child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Login()));
+                            },
                             borderRadius: BorderRadius.circular(25.0),
                             child: Center(
                               child: Text('Begin'),

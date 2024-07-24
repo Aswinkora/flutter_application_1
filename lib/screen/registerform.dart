@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/register.dart';
+import 'package:flutter_application_1/screen/terms.dart';
+
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
 
@@ -7,8 +10,6 @@ class RegistrationForm extends StatefulWidget {
 }
 
 class _RegistrationFormState extends State<RegistrationForm> {
- 
-
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
   final TextEditingController houseNumberController = TextEditingController();
@@ -16,7 +17,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final TextEditingController streetController = TextEditingController();
   final TextEditingController placeController = TextEditingController();
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             left: 0,
             child: Image.asset(
               'images/img.png',
-              width: 200, 
+              width: 200,
             ),
           ),
           SingleChildScrollView(
@@ -87,19 +87,19 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                     
+                      create();
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.pink, 
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.pink,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                       textStyle: TextStyle(fontSize: 20),
                     ),
                     child: Text('REGISTER'),
                   ),
                   TextButton(
-                    onPressed: () {
-                     
-                    },
+                    onPressed: () {},
                     child: Text('Back To Login'),
                   ),
                 ],
@@ -109,5 +109,26 @@ class _RegistrationFormState extends State<RegistrationForm> {
         ],
       ),
     );
+  }
+
+  void create() {
+    
+    String user = userNameController.text;
+    String mobile = mobileNumberController.text;
+    String Street = streetController.text;
+    int housenum = int.parse(houseNumberController.text);
+    String building = buildingNameController.text;
+    String place = placeController.text;
+   
+    RegisterModel newmodel = RegisterModel(
+        username: user,
+        mobilenumber: mobile,
+        housenumber: housenum,
+        buildingname: building,
+        street: Street,
+        place: place , );
+    RegisterDatabase().senddata(newmodel);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => Terms()));
   }
 }
