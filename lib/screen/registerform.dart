@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+class RegistrationForm extends StatefulWidget {
+  const RegistrationForm({super.key});
 
-class RegistrationForm extends StatelessWidget {
+  @override
+  State<RegistrationForm> createState() => _RegistrationFormState();
+}
+
+class _RegistrationFormState extends State<RegistrationForm> {
+ 
+
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
   final TextEditingController houseNumberController = TextEditingController();
@@ -8,8 +16,7 @@ class RegistrationForm extends StatelessWidget {
   final TextEditingController streetController = TextEditingController();
   final TextEditingController placeController = TextEditingController();
 
-  RegistrationForm({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +27,7 @@ class RegistrationForm extends StatelessWidget {
             left: 0,
             child: Image.asset(
               'images/img.png',
-              width: 200,
+              width: 200, 
             ),
           ),
           SingleChildScrollView(
@@ -79,18 +86,20 @@ class RegistrationForm extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                     
+                    },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.pink,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      foregroundColor: Colors.white, backgroundColor: Colors.pink, 
+                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                       textStyle: TextStyle(fontSize: 20),
                     ),
                     child: Text('REGISTER'),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                     
+                    },
                     child: Text('Back To Login'),
                   ),
                 ],
