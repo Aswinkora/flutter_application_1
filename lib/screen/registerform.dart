@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/model/register.dart';
 import 'package:flutter_application_1/screen/terms.dart';
 
@@ -16,6 +18,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final TextEditingController buildingNameController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
   final TextEditingController placeController = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+
+  bool isMobileVerified = false;
+  String verificationId = '';
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +58,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         counterText: '',
                         labelText: 'Mobile Number',
                         border: OutlineInputBorder(),
+                        suffixIcon: isMobileVerified
+                            ? Icon(Icons.check, color: Colors.green)
+                            : null,
                       ),
                       keyboardType: TextInputType.phone,
+                      onChanged: (value) {
+                        if (value.length == 10 && phonevalidate(value) == null) {
+                          verifyPhoneNumber(value);
+                        }
+                      },
                     ),
                     SizedBox(height: 10),
                     TextFormField(
@@ -89,15 +103,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
-                        create();
-                      },
+                      onPressed: isMobileVerified ? create : null,
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor:
-                            const Color.fromARGB(255, 237, 34, 102),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        backgroundColor: const Color.fromARGB(255, 237, 34, 102),
+                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         textStyle: TextStyle(fontSize: 20),
                       ),
                       child: Text('REGISTER'),
@@ -118,6 +128,109 @@ class _RegistrationFormState extends State<RegistrationForm> {
     );
   }
 
+  void verifyPhoneNumber(String phoneNumber) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+91$phoneNumber', // Ensure the country code is correct
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        setState(() {
+          isMobileVerified = true;
+        });
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error message'),
+              content: Text(e.message ?? 'Verification failed'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        setState(() {
+          this.verificationId = verificationId;
+        });
+        showOtpPopup();
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        setState(() {
+          this.verificationId = verificationId;
+        });
+      },
+    );
+  }
+
+  void showOtpPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter OTP'),
+          content: TextField(
+            controller: otpController,
+            decoration: InputDecoration(
+              labelText: 'OTP',
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                validateOtp();
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void validateOtp() async {
+    String enteredOtp = otpController.text;
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: enteredOtp,
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      setState(() {
+        isMobileVerified = true;
+      });
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error message'),
+            content: Text('Invalid OTP'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   void create() async {
     String user = userNameController.text;
     String mobile = mobileNumberController.text;
@@ -125,6 +238,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     String housenumstr = houseNumberController.text;
     String building = buildingNameController.text;
     String place = placeController.text;
+
     if (user.isEmpty ||
         mobile.isEmpty ||
         Street.isEmpty ||
@@ -188,7 +302,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
     } else if (value.length < 10) {
       return 'Please enter the full number';
     } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-      return 'Enter valide numbers';
+      return 'Enter valid numbers';
     }
     return null;
   }
