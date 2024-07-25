@@ -26,17 +26,20 @@ class _DaysState extends State<Days> {
     DateTime(2024, 07, 23),
     DateTime(2024, 07, 22),
     DateTime(2024, 07, 24),
+    DateTime(2024, 07, 25),
     DateTime(2024, 07, 26),
     DateTime(2024, 07, 27),
     DateTime(2024, 07, 28),
     DateTime(2024, 07, 29),
-    DateTime(2024, 07, 30),
     DateTime(2024, 07, 31),
     DateTime(2024, 08, 01),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        
+      ),
       body: Container(
         color: Colors.transparent,
         width: MediaQuery.of(context).size.width,
@@ -98,6 +101,22 @@ class _DaysState extends State<Days> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: IconButton(onPressed: () {}, icon: Icon(Icons.home)),
+            label: 'HOME',
+          ),
+          BottomNavigationBarItem(
+            icon: IconButton(onPressed: () {}, icon: Icon(Icons.local_offer)),
+            label: 'OFFERS',
+          ),
+          BottomNavigationBarItem(
+            icon: IconButton(onPressed: () {}, icon: Icon(Icons.people)),
+            label: 'COMMUNITY',
+          ),
+        ],
       ),
     );
   }

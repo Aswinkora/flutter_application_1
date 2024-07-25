@@ -19,116 +19,177 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Image.asset(
-              'images/img.png',
-              width: 200,
-            ),
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  SizedBox(height: 150),
-                  TextField(
-                    controller: userNameController,
-                    decoration: InputDecoration(
-                      labelText: 'User Name',
-                      border: OutlineInputBorder(),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/img2.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 150),
+                    TextFormField(
+                      controller: userNameController,
+                      decoration: InputDecoration(
+                        labelText: 'User Name',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: mobileNumberController,
-                    decoration: InputDecoration(
-                      labelText: 'Mobile Number',
-                      border: OutlineInputBorder(),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      validator: phonevalidate,
+                      maxLength: 10,
+                      controller: mobileNumberController,
+                      decoration: InputDecoration(
+                        counterText: '',
+                        labelText: 'Mobile Number',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.phone,
                     ),
-                    keyboardType: TextInputType.phone,
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: houseNumberController,
-                    decoration: InputDecoration(
-                      labelText: 'House Number',
-                      border: OutlineInputBorder(),
+                    SizedBox(height: 10),
+                    TextFormField(
+                        controller: houseNumberController,
+                        decoration: InputDecoration(
+                          labelText: 'House Number',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.phone),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: buildingNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Building Name',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: buildingNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Building Name',
-                      border: OutlineInputBorder(),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: streetController,
+                      decoration: InputDecoration(
+                        labelText: 'Street',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: streetController,
-                    decoration: InputDecoration(
-                      labelText: 'Street',
-                      border: OutlineInputBorder(),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: placeController,
+                      decoration: InputDecoration(
+                        labelText: 'Place',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: placeController,
-                    decoration: InputDecoration(
-                      labelText: 'Place',
-                      border: OutlineInputBorder(),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        create();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            const Color.fromARGB(255, 237, 34, 102),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        textStyle: TextStyle(fontSize: 20),
+                      ),
+                      child: Text('REGISTER'),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      create();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.pink,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                      textStyle: TextStyle(fontSize: 20),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Back To Login'),
                     ),
-                    child: Text('REGISTER'),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Back To Login'),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  void create() {
-    
+  void create() async {
     String user = userNameController.text;
     String mobile = mobileNumberController.text;
     String Street = streetController.text;
-    int housenum = int.parse(houseNumberController.text);
+    String housenumstr = houseNumberController.text;
     String building = buildingNameController.text;
     String place = placeController.text;
-   
-    RegisterModel newmodel = RegisterModel(
+    if (user.isEmpty ||
+        mobile.isEmpty ||
+        Street.isEmpty ||
+        (housenumstr.toString().isEmpty) ||
+        building.isEmpty ||
+        place.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error message'),
+            content: Text('All fields are required'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (phonevalidate(mobile.toString()) != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error message'),
+            content: Text('Fill mobile number properly'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      int housenum = int.parse(housenumstr);
+      RegisterModel newmodel = RegisterModel(
         username: user,
         mobilenumber: mobile,
         housenumber: housenum,
         buildingname: building,
         street: Street,
-        place: place , );
-    RegisterDatabase().senddata(newmodel);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Terms()));
+        place: place,
+      );
+      RegisterDatabase().senddata(newmodel);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => Terms()));
+    }
+  }
+
+  String? phonevalidate(value) {
+    if (value.isEmpty) {
+      return null;
+    } else if (value.length < 10) {
+      return 'Please enter the full number';
+    } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+      return 'Enter valide numbers';
+    }
+    return null;
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/model/register.dart';
 import 'package:flutter_application_1/screen/days.dart';
 import 'package:flutter_application_1/screen/registerform.dart';
@@ -52,25 +51,27 @@ class _LoginState extends State<Login> {
                       ),
                       keyboardType: TextInputType.phone,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          child: Text('Create Account'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegistrationForm(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
                         onPressed: login,
                         child: Text('Login'),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Center(
-                      child: TextButton(
-                        child: Text('Create Account'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegistrationForm(),
-                            ),
-                          );
-                        },
                       ),
                     ),
                   ],
