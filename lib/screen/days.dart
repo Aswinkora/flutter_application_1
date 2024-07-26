@@ -38,7 +38,7 @@
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-        
+
 //       ),
 //       body: Container(
 //         color: Colors.transparent,
@@ -121,7 +121,7 @@
 //     );
 //   }
 // }
-
+//  ------------------------------------------------------------------------------------------
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_1/screen/image.dart'; // Ensure this import matches your file structure
@@ -233,22 +233,6 @@ class _DaysState extends State<Days> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: IconButton(onPressed: () {}, icon: Icon(Icons.home)),
-            label: 'HOME',
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(onPressed: () {}, icon: Icon(Icons.local_offer)),
-            label: 'OFFERS',
-          ),
-          BottomNavigationBarItem(
-            icon: IconButton(onPressed: () {}, icon: Icon(Icons.people)),
-            label: 'COMMUNITY',
-          ),
-        ],
       ),
     );
   }

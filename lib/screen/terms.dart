@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screen/days.dart';
+import 'package:flutter_application_1/screen/tabs.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Terms extends StatelessWidget {
@@ -20,10 +21,7 @@ class Terms extends StatelessWidget {
             children: [
               Icon(Icons.person),
               Flexible(
-                child: Text(
-                  username,
-                  overflow: TextOverflow.clip
-                ),
+                child: Text(username, overflow: TextOverflow.clip),
               ),
             ],
           ),
@@ -54,7 +52,7 @@ class Terms extends StatelessWidget {
                     child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => Days()));
+                              MaterialPageRoute(builder: (context) => Tabs()));
                         },
                         borderRadius: BorderRadius.circular(25.0),
                         child: Center(
