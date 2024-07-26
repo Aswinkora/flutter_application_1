@@ -112,31 +112,70 @@ class _UploadScreenState extends State<UploadScreen> {
     );
   }
 
-  void _uploadImage() async {
-    setState(() {
-      _isUploading = true;
-    });
+  // void _uploadImage() async {
+  //   setState(() {
+  //     _isUploading = true;
+  //   });
 
-    try {
-      await uploadimage(widget.image);
+  //   try {
+  //   String? image= await uploadimage(widget.image);
+  //     setState(() {
+  //       _isUploading = false;
+  //     });
+  //     PhotoDatabase().sendData(PhotoModel(
+  //         imageUrl:image,
+  //         user: 'user',
+  //         date: widget.selectedDate));
+
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Upload successful!')),
+  //     );
+  //   } catch (e) {
+  //     setState(() {
+  //       _isUploading = false;
+  //     });
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Upload failed: $e')),
+  //     );
+  //   }
+  // }
+
+  void _uploadImage() async {
+  setState(() {
+    _isUploading = true;
+  });
+
+  try {
+    // Step 1: Upload image to Firebase Storage
+    String? imageUrl = await uploadimage(widget.image);
+
+    // Check if imageUrl is not null before proceeding
+    if (imageUrl != null) {
+      // Step 2: Store image URL and metadata in Firestore
+      PhotoDatabase().sendData(PhotoModel(
+        imageUrl: imageUrl, // No longer nullable
+        user: 'user', // Replace with actual user information
+        date: widget.selectedDate,
+      ));
+
       setState(() {
         _isUploading = false;
       });
-      PhotoDatabase().sendData(PhotoModel(
-          imageUrl: widget.image.path,
-          user: 'user',
-          date: widget.selectedDate));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Upload successful!')),
       );
-    } catch (e) {
-      setState(() {
-        _isUploading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Upload failed: $e')),
-      );
+    } else {
+      throw Exception('Image upload failed');
     }
+  } catch (e) {
+    setState(() {
+      _isUploading = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Upload failed: $e')),
+    );
   }
+}
+
 }
