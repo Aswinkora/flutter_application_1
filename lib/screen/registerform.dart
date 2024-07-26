@@ -231,70 +231,73 @@ class _RegistrationFormState extends State<RegistrationForm> {
     }
   }
 
-  void create() async {
-    String user = userNameController.text;
-    String mobile = mobileNumberController.text;
-    String Street = streetController.text;
-    String housenumstr = houseNumberController.text;
-    String building = buildingNameController.text;
-    String place = placeController.text;
+ void create() async {
+  String user = userNameController.text;
+  String mobile = mobileNumberController.text;
+  String Street = streetController.text;
+  String housenumstr = houseNumberController.text;
+  String building = buildingNameController.text;
+  String place = placeController.text;
 
-    if (user.isEmpty ||
-        mobile.isEmpty ||
-        Street.isEmpty ||
-        (housenumstr.toString().isEmpty) ||
-        building.isEmpty ||
-        place.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error message'),
-            content: Text('All fields are required'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-    } else if (phonevalidate(mobile.toString()) != null) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error message'),
-            content: Text('Fill mobile number properly'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      int housenum = int.parse(housenumstr);
-      RegisterModel newmodel = RegisterModel(
-        username: user,
-        mobilenumber: mobile,
-        housenumber: housenum,
-        buildingname: building,
-        street: Street,
-        place: place,
-      );
-      RegisterDatabase().senddata(newmodel);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Terms()));
-    }
+  if (user.isEmpty ||
+      mobile.isEmpty ||
+      Street.isEmpty ||
+      (housenumstr.toString().isEmpty) ||
+      building.isEmpty ||
+      place.isEmpty) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error message'),
+          content: Text('All fields are required'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+  } else if (phonevalidate(mobile.toString()) != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error message'),
+          content: Text('Fill mobile number properly'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    int housenum = int.parse(housenumstr);
+    RegisterModel newmodel = RegisterModel(
+      username: user,
+      mobilenumber: mobile,
+      housenumber: housenum,
+      buildingname: building,
+      street: Street,
+      place: place,
+    );
+    RegisterDatabase().senddata(newmodel);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Terms(username: user),
+      ),
+    );
   }
+}
 
   String? phonevalidate(value) {
     if (value.isEmpty) {

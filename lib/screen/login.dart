@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/register.dart';
 import 'package:flutter_application_1/screen/days.dart';
 import 'package:flutter_application_1/screen/registerform.dart';
+import 'package:flutter_application_1/screen/terms.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -85,28 +86,34 @@ class _LoginState extends State<Login> {
   }
 
   void login() async {
-    String mobileNumber = numcntrl.text.trim();
-    RegisterDatabase db = RegisterDatabase();
-    RegisterModel? user = await db.getdetails(mobileNumber);
-    if (user != null) {
-      print('User found: ${user.username}');
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Days()));
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Mobile number not registered'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+  String mobileNumber = numcntrl.text.trim();
+  RegisterDatabase db = RegisterDatabase();
+  RegisterModel? user = await db.getdetails(mobileNumber);
+  if (user != null) {
+    print('User found: ${user.username}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Terms(username: user.username),
+      ),
+    );
+  } else {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text('Mobile number not registered'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
   }
+}
+
 }

@@ -3,7 +3,9 @@ import 'package:flutter_application_1/screen/days.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Terms extends StatelessWidget {
-  const Terms({super.key});
+  final String username;
+
+  const Terms({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +15,31 @@ class Terms extends StatelessWidget {
               image: AssetImage('images/img2.png'), fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: Row(
+            children: [
+              Icon(Icons.person),
+              Flexible(
+                child: Text(
+                  username,
+                  overflow: TextOverflow.clip
+                ),
+              ),
+            ],
+          ),
+        ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Center(
-              child: Text(
-                '916 Onam',
-                style: GoogleFonts.bungeeShade(
-                    fontWeight: FontWeight.bold, fontSize: 40),
+              child: Column(
+                children: [
+                  Text(
+                    '916 ONAM',
+                    style: GoogleFonts.bungeeShade(
+                        fontWeight: FontWeight.bold, fontSize: 40),
+                  ),
+                ],
               ),
             ),
             Container(
