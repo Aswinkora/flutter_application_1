@@ -3,7 +3,6 @@ import 'package:flutter_application_1/screen/days.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Terms extends StatelessWidget {
-  const Terms({super.key});
 
   @override
   Widget build(BuildContext context) {

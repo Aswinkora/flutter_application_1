@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/photo.dart';
 import 'package:flutter_application_1/model/uploadimage.dart';
 
 // class UploadScreen extends StatefulWidget {
@@ -54,7 +55,8 @@ import 'package:flutter_application_1/model/uploadimage.dart';
 // }
 class UploadScreen extends StatefulWidget {
   final File image;
-  const UploadScreen({super.key, required this.image});
+  final DateTime selectedDate;
+  UploadScreen({super.key, required this.image, required this.selectedDate});
 
   @override
   State<UploadScreen> createState() => _UploadScreenState();
@@ -68,7 +70,7 @@ class _UploadScreenState extends State<UploadScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/img2.png'), 
+          image: AssetImage('images/img2.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -92,12 +94,12 @@ class _UploadScreenState extends State<UploadScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              _isUploading 
-                ? CircularProgressIndicator() 
-                : ElevatedButton(
-                    onPressed: _uploadImage,
-                    child: Text('Upload'),
-                  ),
+              _isUploading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _uploadImage,
+                      child: Text('Upload'),
+                    ),
               if (_isUploading)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -120,6 +122,11 @@ class _UploadScreenState extends State<UploadScreen> {
       setState(() {
         _isUploading = false;
       });
+      PhotoDatabase().sendData(PhotoModel(
+          imageUrl: widget.image.path,
+          user: 'user',
+          date: widget.selectedDate));
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Upload successful!')),
       );
