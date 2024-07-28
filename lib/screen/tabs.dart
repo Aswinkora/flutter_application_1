@@ -32,7 +32,7 @@ class _TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
           children: [
             Days(),
             ClientScreen(),
-            Community(),
+            ChatScreen(),
           ],
         ),
         bottomNavigationBar: TabBar(

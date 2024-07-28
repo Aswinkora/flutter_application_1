@@ -85,34 +85,33 @@ class _LoginState extends State<Login> {
   }
 
   void login() async {
-  String mobileNumber = numcntrl.text.trim();
-  RegisterDatabase db = RegisterDatabase();
-  RegisterModel? user = await db.getdetails(mobileNumber);
-  if (user != null) {
-    print('User found: ${user.username}');
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Terms(username: user.username),
-      ),
-    );
-  } else {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text('Mobile number not registered'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Ok'),
-            ),
-          ],
-        );
-      },
-    );
+    String mobileNumber = numcntrl.text.trim();
+    RegisterDatabase db = RegisterDatabase();
+    RegisterModel? user = await db.getdetails(mobileNumber);
+    if (user != null) {
+      print('User found: ${user.username}');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Terms(username: user.username),
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Mobile number not registered'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
-
 }
