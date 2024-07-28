@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/register.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserProvider extends ChangeNotifier {
-  RegisterModel? registerModel;
-  RegisterModel? get regi => registerModel;
-   void setRegisterModel(RegisterModel model) {
-    registerModel = model;
+class ClientProvider with ChangeNotifier {
+  List<DocumentSnapshot> _items = [];
+  List<DocumentSnapshot> _filteredItems = [];
+  bool _isLoading = false;
+
+  List<DocumentSnapshot> get items => _filteredItems;
+  bool get isLoading => _isLoading;
+
+  Future<void> fetchItems() async {
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('items').get();
+      _items = snapshot.docs;
+      _filteredItems = _items;
+    } catch (error) {
+      // Handle error
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
-   void clearRegisterModel() {
-    registerModel = null;
+
+  void filterItems(String query) {
+    if (query.isEmpty) {
+      _filteredItems = _items;
+    } else {
+      _filteredItems = _items.where((item) {
+        return item['name'].toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
     notifyListeners();
   }
 }
