@@ -6,8 +6,22 @@ class ClientScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Client App'),
-      ),
+          automaticallyImplyLeading: false,
+          title: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(style: BorderStyle.none),
+                        borderRadius: BorderRadius.circular(15)),
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      color: Color.fromARGB(221, 166, 165, 165),
+                    ),
+                    hintText: 'search....'),
+              ),
+            ],
+          )),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('items').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -24,7 +38,8 @@ class ClientScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               var doc = snapshot.data!.docs[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Card(
                   elevation: 2,
                   shape: RoundedRectangleBorder(
@@ -60,7 +75,8 @@ class ClientScreen extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '₹${doc['originalPrice']}',

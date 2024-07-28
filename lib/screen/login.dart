@@ -89,7 +89,6 @@ class _LoginState extends State<Login> {
   RegisterDatabase db = RegisterDatabase();
   RegisterModel? user = await db.getdetails(mobileNumber);
   if (user != null) {
-    print('User found: ${user.username}');
     Navigator.push(
       context,
       MaterialPageRoute(

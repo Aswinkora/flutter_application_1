@@ -82,16 +82,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Imagescreen extends StatefulWidget {
-  final DateTime selectedDate; // Add this line to accept selectedDate
+  final DateTime selectedDate; 
 
-  const Imagescreen({super.key, required this.selectedDate}); // Make selectedDate required
+  const Imagescreen({super.key, required this.selectedDate});
 
   @override
   State<Imagescreen> createState() => _ImagescreenState();
 }
 
 class _ImagescreenState extends State<Imagescreen> {
-  ImagePicker _picker = ImagePicker();
+  ImagePicker picker = ImagePicker();
   XFile? file;
 
   @override
@@ -99,7 +99,7 @@ class _ImagescreenState extends State<Imagescreen> {
     Future<void> opencamera() async {
       if (await Permission.camera.request().isGranted) {
         final XFile? image =
-            await _picker.pickImage(source: ImageSource.camera);
+            await picker.pickImage(source: ImageSource.camera);
         if (image != null) {
           setState(() {
             file = image;
@@ -107,7 +107,7 @@ class _ImagescreenState extends State<Imagescreen> {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => UploadScreen(
                     image: File(image.path),
-                    selectedDate: widget.selectedDate, // Pass selectedDate
+                    selectedDate: widget.selectedDate, 
                   )));
         }
       }
@@ -116,7 +116,7 @@ class _ImagescreenState extends State<Imagescreen> {
     Future<void> openGallary() async {
       if (await Permission.photos.request().isGranted) {
         final XFile? images =
-            await _picker.pickImage(source: ImageSource.gallery);
+            await picker.pickImage(source: ImageSource.gallery);
         if (images != null) {
           setState(() {
             file = images;
@@ -124,7 +124,7 @@ class _ImagescreenState extends State<Imagescreen> {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => UploadScreen(
                     image: File(images.path),
-                    selectedDate: widget.selectedDate, // Pass selectedDate
+                    selectedDate: widget.selectedDate, 
                   )));
         }
       }
