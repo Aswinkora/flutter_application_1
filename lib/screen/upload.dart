@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/photo.dart';
 import 'package:flutter_application_1/model/uploadimage.dart';
-import 'package:flutter_application_1/screen/days.dart';
 import 'package:flutter_application_1/screen/tabs.dart';
 
 class UploadScreen extends StatefulWidget {

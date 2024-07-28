@@ -60,11 +60,10 @@ class PhotoModel {
 
 class PhotoDatabase {
   CollectionReference<Map<String, dynamic>> database(String day) {
-    // Check if the day string is valid
     if (day.isEmpty || day.contains('/') || day.contains('.')) {
       throw ArgumentError('Invalid collection path: $day');
     }
-    print("Database path: PhotoDatabase/$day"); // Debug statement
+    print("Database path: PhotoDatabase/$day");
     return FirebaseFirestore.instance
         .collection('PhotoDatabase')
         .doc(day)
@@ -83,5 +82,4 @@ class PhotoDatabase {
       print('Error: $e');
     }
   }
-  
 }
