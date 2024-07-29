@@ -387,7 +387,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/userprovider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_application_1/controller/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/screen/image.dart';
@@ -472,6 +471,17 @@ class _DaysState extends State<Days> {
     return now.isAfter(startDate) && now.isBefore(endDate);
   }
 
+  Future<bool> _isDayUploaded(String dayName) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final userDoc = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userProvider.username)
+        .collection(dayName);
+
+    final querySnapshot = await userDoc.get();
+    return querySnapshot.docs.isNotEmpty;
+  }
+
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
@@ -484,7 +494,6 @@ class _DaysState extends State<Days> {
 
     return Scaffold(
       appBar: AppBar(
-   
         leading: Row(
           children: [
             Icon(Icons.person),
@@ -507,52 +516,65 @@ class _DaysState extends State<Days> {
                   String dayName = _days[index];
                   bool current = _isCurrentDay(dayName);
 
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (current) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => Imagescreen(
-                                selectedDate: DateTime.now(),
+                  return FutureBuilder<bool>(
+                    future: _isDayUploaded(dayName),
+                    builder: (context, snapshot) {
+                      // if (snapshot.connectionState == ConnectionState.waiting) {
+                      //   return null();
+                      // }
+                      bool uploaded = snapshot.data ?? false;
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (current && !uploaded) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => Imagescreen(
+                                    selectedDate: DateTime.now(),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(uploaded ? 'Already uploaded' : 'NOT ALLOWED')),
+                              );
+                            }
+                          },
+                          child: Container(
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(33),
+                              gradient: LinearGradient(
+                                colors: current
+                                    ? [
+                                        Color.fromARGB(255, 255, 215, 0),
+                                        Color.fromARGB(255, 255, 223, 186),
+                                      ]
+                                    : [
+                                        Color.fromARGB(117, 255, 217, 0),
+                                        Color.fromARGB(255, 255, 223, 186),
+                                      ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.bottomLeft,
                               ),
                             ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('NOT ALLOWED')),
-                          );
-                        }
-                      },
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(33),
-                          gradient: LinearGradient(
-                            colors: current
-                                ? [
-                                    Color.fromARGB(255, 255, 215, 0),
-                                    Color.fromARGB(255, 255, 223, 186),
-                                  ]
-                                : [
-                                    Color.fromARGB(117, 255, 217, 0),
-                                    Color.fromARGB(255, 255, 223, 186),
-                                  ],
-                            begin: Alignment.centerLeft,
-                            end: Alignment.bottomLeft,
-                          ),
-                        ),
-                        child: Center(
-                          child: ListTile(
-                            leading: Text(
-                              dayName,
-                              style: GoogleFonts.inter(fontSize: 20),
+                            child: Center(
+                              child: ListTile(
+                                leading: Text(
+                                  dayName,
+                                  style: GoogleFonts.inter(fontSize: 20),
+                                ),
+                                trailing: uploaded
+                                    ? Icon(Icons.check, color: Colors.green)
+                                    : null,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               ),

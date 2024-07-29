@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_application_1/screen/upload.dart';
+import 'package:provider/provider.dart';
 
 class Imagescreen extends StatefulWidget {
   final DateTime selectedDate;
@@ -27,10 +29,12 @@ class _ImagescreenState extends State<Imagescreen> {
           setState(() {
             file = image;
           });
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => UploadScreen(
                     image: File(image.path),
                     selectedDate: widget.selectedDate,
+                          username: Provider.of<UserProvider>(context, listen: false).username,
+
                   )));
         }
       }
@@ -44,10 +48,12 @@ class _ImagescreenState extends State<Imagescreen> {
           setState(() {
             file = images;
           });
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => UploadScreen(
                     image: File(images.path),
                     selectedDate: widget.selectedDate,
+                     username: Provider.of<UserProvider>(context, listen: false).username,
+
                   )));
         }
       }
