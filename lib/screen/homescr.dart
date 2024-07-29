@@ -23,23 +23,20 @@ class ClientState extends State<ClientScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final clientProvider = Provider.of<ClientProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
+
+    final clientProvider = Provider.of<ClientProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        leading: Row(
           children: [
             Icon(Icons.person),
-            SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                userProvider.username,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 16),
-              ),
+            Flexible(
+              child: Text(userProvider.username, overflow: TextOverflow.clip),
             ),
           ],
         ),
+        title: Text('Client Screen'),
       ),
       body: Column(
         children: [
