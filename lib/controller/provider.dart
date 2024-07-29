@@ -9,10 +9,6 @@ class ClientProvider with ChangeNotifier {
   List<DocumentSnapshot> get items => _filteredItems;
   bool get isLoading => _isLoading;
 
-  ClientProvider() {
-    fetchItems();
-  }
-
   Future<void> fetchItems() async {
     _isLoading = true;
     notifyListeners();
