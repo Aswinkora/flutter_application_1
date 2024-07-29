@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_application_1/screen/login.dart';
 import 'package:flutter_application_1/screen/terms.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
 
 class Frontscreen extends StatelessWidget {
   @override
@@ -56,6 +58,7 @@ class Frontscreen extends StatelessWidget {
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     if (isLoggedIn) {
       String username = prefs.getString('username') ?? '';
+      Provider.of<UserProvider>(context, listen: false).setUsername(username);
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Terms(username: username)));
     }
   }

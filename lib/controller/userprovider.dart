@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider with ChangeNotifier {
   String _username = '';
@@ -26,6 +27,11 @@ class UserProvider with ChangeNotifier {
 
   void setUsername(String username) {
     _username = username;
+    notifyListeners();
+  }
+    Future<void> loadUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    _username = prefs.getString('username') ?? '';
     notifyListeners();
   }
 }

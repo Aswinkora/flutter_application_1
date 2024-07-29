@@ -28,16 +28,20 @@ class ClientState extends State<ClientScreen> {
     final clientProvider = Provider.of<ClientProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: Row(
-          children: [
-            Icon(Icons.person),
-            Flexible(
-              child: Text(userProvider.username, overflow: TextOverflow.clip),
-            ),
-          ],
+          title: Row(
+            children: [
+              Icon(Icons.person),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                 userProvider. username,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
         ),
-        title: Text('Client Screen'),
-      ),
       body: Column(
         children: [
           Padding(
