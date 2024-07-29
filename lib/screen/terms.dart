@@ -51,7 +51,7 @@ class Terms extends StatelessWidget {
                     child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => Tabs()));
+                              MaterialPageRoute(builder: (context) => Tabs(user: username,)));
                         },
                         borderRadius: BorderRadius.circular(25.0),
                         child: Center(

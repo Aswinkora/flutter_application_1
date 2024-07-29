@@ -384,8 +384,10 @@
 //     );
 //   }
 // }
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_application_1/controller/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/screen/image.dart';
@@ -478,9 +480,19 @@ class _DaysState extends State<Days> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Day'),
+   
+        leading: Row(
+          children: [
+            Icon(Icons.person),
+            Flexible(
+              child: Text(userProvider.username, overflow: TextOverflow.clip),
+            ),
+          ],
+        ),
       ),
       body: Container(
         color: Colors.transparent,

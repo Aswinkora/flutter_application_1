@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/model/register.dart';
 import 'package:flutter_application_1/screen/terms.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
 
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
@@ -230,73 +232,74 @@ class _RegistrationFormState extends State<RegistrationForm> {
     }
   }
 
- void create() async {
-  String user = userNameController.text;
-  String mobile = mobileNumberController.text;
-  String Street = streetController.text;
-  String housenumstr = houseNumberController.text;
-  String building = buildingNameController.text;
-  String place = placeController.text;
+  void create() async {
+    String user = userNameController.text;
+    String mobile = mobileNumberController.text;
+    String Street = streetController.text;
+    String housenumstr = houseNumberController.text;
+    String building = buildingNameController.text;
+    String place = placeController.text;
 
-  if (user.isEmpty ||
-      mobile.isEmpty ||
-      Street.isEmpty ||
-      (housenumstr.toString().isEmpty) ||
-      building.isEmpty ||
-      place.isEmpty) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error message'),
-          content: Text('All fields are required'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
-        );
-      },
-    );
-  } else if (phonevalidate(mobile.toString()) != null) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error message'),
-          content: Text('Fill mobile number properly'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Ok'),
-            ),
-          ],
-        );
-      },
-    );
-  } else {
-    int housenum = int.parse(housenumstr);
-    RegisterModel newmodel = RegisterModel(
-      username: user,
-      mobilenumber: mobile,
-      housenumber: housenum,
-      buildingname: building,
-      street: Street,
-      place: place,
-    );
-    RegisterDatabase().senddata(newmodel);
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => Terms(username: user),
-      ),
-    );
+    if (user.isEmpty ||
+        mobile.isEmpty ||
+        Street.isEmpty ||
+        (housenumstr.toString().isEmpty) ||
+        building.isEmpty ||
+        place.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error message'),
+            content: Text('All fields are required'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (phonevalidate(mobile.toString()) != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error message'),
+            content: Text('Fill mobile number properly'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      int housenum = int.parse(housenumstr);
+      RegisterModel newmodel = RegisterModel(
+        username: user,
+        mobilenumber: mobile,
+        housenumber: housenum,
+        buildingname: building,
+        street: Street,
+        place: place,
+      );
+      await RegisterDatabase().senddata(newmodel);
+      Provider.of<UserProvider>(context, listen: false).setUsername(user);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Terms(username: user),
+        ),
+      );
+    }
   }
-}
 
   String? phonevalidate(value) {
     if (value.isEmpty) {

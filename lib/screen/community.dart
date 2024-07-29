@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/controller/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -13,9 +16,19 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Community Chat'),
+        leading: Row(
+          children: [
+            Icon(Icons.person),
+            Flexible(
+              child: Text(userProvider.username, overflow: TextOverflow.clip),
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
@@ -100,4 +113,3 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 }
-

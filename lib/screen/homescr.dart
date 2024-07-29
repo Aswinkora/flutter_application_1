@@ -7,6 +7,7 @@ class ClientScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final clientProvider = Provider.of<ClientProvider>(context);
     final TextEditingController _searchController = TextEditingController();
+    final FocusNode _focusNode = FocusNode();
 
     return Scaffold(
       appBar: AppBar(
@@ -18,14 +19,13 @@ class ClientScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
-              decoration: InputDecoration(labelText: "search",
-                // contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+              focusNode: _focusNode,
+              decoration: InputDecoration(
+                labelText: "Search",
                 border: OutlineInputBorder(
                   borderSide: BorderSide(style: BorderStyle.none),
                   borderRadius: BorderRadius.circular(15),
                 ),
-                // filled: true,
-                // fillColor: Colors.white,
                 prefixIcon: Icon(
                   Icons.search_rounded,
                   color: Color.fromARGB(221, 166, 165, 165),
@@ -36,6 +36,10 @@ class ClientScreen extends StatelessWidget {
               style: TextStyle(color: Colors.black), // Ensure the text is visible
               onChanged: (value) {
                 clientProvider.filterItems(value);
+              },
+              onTap: () {
+                // Ensure the keyboard is visible
+                _focusNode.requestFocus();
               },
             ),
           ),

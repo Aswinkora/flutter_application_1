@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/photo.dart';
 import 'package:flutter_application_1/model/uploadimage.dart';
@@ -87,7 +86,7 @@ class _UploadScreenState extends State<UploadScreen> {
           SnackBar(content: Text('Upload successful!')),
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Tabs()));
+            context, MaterialPageRoute(builder: (context) => Tabs(user: "")));
       } else {
         throw Exception('Image upload failed');
       }
