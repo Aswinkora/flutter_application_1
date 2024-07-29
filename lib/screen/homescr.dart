@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/provider.dart';
 
-class ClientScreen extends StatelessWidget {
+class ClientScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return ClientState();
+  }
+}
+
+class ClientState extends State<ClientScreen> {
   @override
   Widget build(BuildContext context) {
     final clientProvider = Provider.of<ClientProvider>(context);
@@ -17,7 +24,7 @@ class ClientScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
+            child: TextFormField(
               controller: _searchController,
               focusNode: _focusNode,
               decoration: InputDecoration(
@@ -33,7 +40,8 @@ class ClientScreen extends StatelessWidget {
                 hintText: 'Search...',
                 hintStyle: TextStyle(color: Color.fromARGB(221, 166, 165, 165)),
               ),
-              style: TextStyle(color: Colors.black), // Ensure the text is visible
+              style:
+                  TextStyle(color: Colors.black), // Ensure the text is visible
               onChanged: (value) {
                 clientProvider.filterItems(value);
               },
@@ -53,7 +61,8 @@ class ClientScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           var doc = clientProvider.items[index];
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
                             child: Card(
                               elevation: 2,
                               shape: RoundedRectangleBorder(
@@ -74,7 +83,8 @@ class ClientScreen extends StatelessWidget {
                                     SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             doc['name'],
@@ -89,7 +99,8 @@ class ClientScreen extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
                                                 '₹${doc['originalPrice']}',
