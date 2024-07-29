@@ -360,7 +360,7 @@ class _UploadScreenState extends State<UploadScreen> {
           SnackBar(content: Text('Upload successful!')),
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Tabs()));
+            context, MaterialPageRoute(builder: (context) => Tabs(user: userid,)));
       } else {
         throw Exception('Image upload failed');
       }
