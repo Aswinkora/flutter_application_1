@@ -287,7 +287,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       housenumber: housenum,
       buildingname: building,
       street: Street,
-      place: place,
+      place: place, 
     );
     RegisterDatabase().senddata(newmodel);
     Navigator.of(context).push(

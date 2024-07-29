@@ -32,54 +32,64 @@
 //     }
 //   }
 // }
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:intl/intl.dart';
 
-class PhotoModel {
-  PhotoModel({required this.imageUrl, required this.user, required this.date});
-  String user;
-  String imageUrl;
-  DateTime date;
+// class PhotoModel {
+//   PhotoModel(
+//       {required this.imageUrl,
+//       required this.user,
+//       required this.date,
+//       required this.days});
+//   String user;
+//   String imageUrl;
+//   DateTime date;
+//   List days;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'user': user,
-      'imageUrl': imageUrl,
-      'date': date,
-    };
-  }
+//   Map<String, dynamic> toMap() {
+//     return {
+//       'user': user,
+//       'imageUrl': imageUrl,
+//       'date': date,
+//       'days':days
+//     };
+//   }
 
-  factory PhotoModel.fromMap(Map<String, dynamic> map) {
-    return PhotoModel(
-      user: map['user'],
-      imageUrl: map['imageUrl'],
-      date: (map['date'] as Timestamp).toDate(),
-    );
-  }
-}
+//   factory PhotoModel.fromMap(Map<String, dynamic> map) {
+//     return PhotoModel(
+//       user: map['user'],
+//       imageUrl: map['imageUrl'],
+//       date: (map['date'] as Timestamp).toDate(),
+//       // ignore: collection_methods_unrelated_type
+//       days:map['days']
+//     );
+//   }
+// }
 
-class PhotoDatabase {
-  CollectionReference<Map<String, dynamic>> database(String day) {
-    if (day.isEmpty || day.contains('/') || day.contains('.')) {
-      throw ArgumentError('Invalid collection path: $day');
-    }
-    print("Database path: PhotoDatabase/$day");
-    return FirebaseFirestore.instance
-        .collection('PhotoDatabase')
-        .doc(day)
-        .collection('user');
-  }
+// class PhotoDatabase {
+//   CollectionReference<Map<String, dynamic>> database(String day) {
+//     if (day.isEmpty || day.contains('/') || day.contains('.')) {
+//       throw ArgumentError('Invalid collection path: $day');
+//     }
+//     print("Database path: PhotoDatabase/$day");
+//     return FirebaseFirestore.instance
+//         .collection('PhotoDatabase')
+//         .doc(day)
+//         .collection('user');
+//   }
 
-  Future<void> sendData(PhotoModel photo) async {
-    try {
-      String day = DateFormat('yyyy-MM-dd').format(photo.date);
-      if (day.isEmpty || day.contains('/') || day.contains('.')) {
-        throw ArgumentError('Invalid formatted day string: $day');
-      }
-      await database(day).add(photo.toMap());
-      print('Data added');
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-}
+//   Future<void> sendData(PhotoModel photo) async {
+//     try {
+//       String day = DateFormat('yyyy-MM-dd').format(photo.date);
+//       if (day.isEmpty || day.contains('/') || day.contains('.')) {
+//         throw ArgumentError('Invalid formatted day string: $day');
+//       }
+//       await database(day).add(photo.toMap());
+//       print('Data added');
+//     } catch (e) {
+//       print('Error: $e');
+//     }
+//   }
+// }
+
+
