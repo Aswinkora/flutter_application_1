@@ -242,11 +242,13 @@ import 'package:flutter_application_1/screen/tabs.dart';
 class UploadScreen extends StatefulWidget {
   final File image;
   final DateTime selectedDate;
+  final String username;
 
   UploadScreen({
     super.key,
     required this.image,
     required this.selectedDate,
+    required this.username,
   });
 
   @override
@@ -257,7 +259,6 @@ class _UploadScreenState extends State<UploadScreen> {
   bool _isUploading = false;
   List<String> days = [];
   DateTime? startingDate;
-  var userid;
 
   @override
   void initState() {
@@ -349,18 +350,19 @@ class _UploadScreenState extends State<UploadScreen> {
 
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(days.toString())
+            .doc(widget.username)
             .collection(dayName)
             .add({
           'imageUrl': imageUrl,
           'date': widget.selectedDate,
+          'username': widget.username,
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Upload successful!')),
         );
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Tabs(user: userid,)));
+            context, MaterialPageRoute(builder: (context) => Tabs(user: widget.username)));
       } else {
         throw Exception('Image upload failed');
       }
