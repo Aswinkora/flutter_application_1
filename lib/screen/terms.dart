@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screen/tabs.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_application_1/screen/login.dart';
 
 class Terms extends StatelessWidget {
   final String username;
@@ -11,19 +13,40 @@ class Terms extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/img2.png'), fit: BoxFit.cover)),
+        image: DecorationImage(
+          image: AssetImage('images/img2.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          leading: Row(
+          title: Row(
             children: [
               Icon(Icons.person),
-              Flexible(
-                child: Text(username, overflow: TextOverflow.clip),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  username,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
               ),
             ],
           ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.clear();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Login()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            ),
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -34,32 +57,41 @@ class Terms extends StatelessWidget {
                   Text(
                     '916 ONAM',
                     style: GoogleFonts.bungeeShade(
-                        fontWeight: FontWeight.bold, fontSize: 40),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                    ),
                   ),
                 ],
               ),
             ),
+            SizedBox(height: 20),
             Container(
-                width: 200,
-                height: 50,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.pink, Colors.deepPurple]),
-                    borderRadius: BorderRadius.circular(25)),
-                child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => Tabs(user: username,)));
-                        },
-                        borderRadius: BorderRadius.circular(25.0),
-                        child: Center(
-                          child: Text(
-                            'START',
-                            style: GoogleFonts.aladin(fontSize: 33),
-                          ),
-                        ))))
+              width: 200,
+              height: 50,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.pink, Colors.deepPurple],
+                ),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Tabs(user: username),
+                    ));
+                  },
+                  borderRadius: BorderRadius.circular(25.0),
+                  child: Center(
+                    child: Text(
+                      'START',
+                      style: GoogleFonts.aladin(fontSize: 33),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

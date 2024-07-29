@@ -137,25 +137,20 @@ class _ChatScreenState extends State<ChatScreen> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Community Chat'),
-        leading: Row(
+        appBar: AppBar(
+        title: Row(
           children: [
             Icon(Icons.person),
-            Flexible(
-              child: Text(userProvider.username, overflow: TextOverflow.clip),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                userProvider.username,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () async {
-              await _auth.signOut();
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -181,7 +176,9 @@ class _ChatScreenState extends State<ChatScreen> {
                           : Text(message['text']),
                       trailing: Text(
                         message['timestamp'] != null
-                            ? (message['timestamp'] as Timestamp).toDate().toString()
+                            ? (message['timestamp'] as Timestamp)
+                                .toDate()
+                                .toString()
                             : '',
                         style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),

@@ -4,6 +4,7 @@ import 'package:flutter_application_1/model/register.dart';
 import 'package:flutter_application_1/screen/terms.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/userprovider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
@@ -293,6 +294,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
       );
       await RegisterDatabase().senddata(newmodel);
       Provider.of<UserProvider>(context, listen: false).setUsername(user);
+      
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
+      prefs.setString('username', user);
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Terms(username: user),

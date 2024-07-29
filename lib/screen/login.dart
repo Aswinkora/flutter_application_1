@@ -4,6 +4,7 @@ import 'package:flutter_application_1/screen/registerform.dart';
 import 'package:flutter_application_1/screen/terms.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/userprovider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -91,6 +92,10 @@ class _LoginState extends State<Login> {
     RegisterDatabase db = RegisterDatabase();
     RegisterModel? user = await db.getdetails(mobileNumber);
     if (user != null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
+      prefs.setString('username', user.username);
+      
       Provider.of<UserProvider>(context, listen: false).setUsername(user.username);
       Navigator.push(
         context,

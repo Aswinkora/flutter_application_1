@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/provider.dart';
 
@@ -10,15 +11,35 @@ class ClientScreen extends StatefulWidget {
 }
 
 class ClientState extends State<ClientScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch items when the screen initializes
+    Provider.of<ClientProvider>(context, listen: false).fetchItems();
+  }
+
   @override
   Widget build(BuildContext context) {
     final clientProvider = Provider.of<ClientProvider>(context);
-    final TextEditingController _searchController = TextEditingController();
-    final FocusNode _focusNode = FocusNode();
-
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Client Screen'),
+        title: Row(
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                userProvider.username,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -130,10 +151,6 @@ class ClientState extends State<ClientScreen> {
                       ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => clientProvider.fetchItems(),
-        child: Icon(Icons.refresh),
       ),
     );
   }

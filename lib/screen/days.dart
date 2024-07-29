@@ -493,16 +493,21 @@ class _DaysState extends State<Days> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Row(
-          children: [
-            Icon(Icons.person),
-            Flexible(
-              child: Text(userProvider.username, overflow: TextOverflow.clip),
-            ),
-          ],
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Icon(Icons.person),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                 userProvider. username,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       body: Container(
         color: Colors.transparent,
         width: MediaQuery.of(context).size.width,
