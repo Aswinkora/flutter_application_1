@@ -16,13 +16,23 @@ class Terms extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          leading: Row(
-            children: [
-              Icon(Icons.person),
-              Flexible(
-                child: Text(username, overflow: TextOverflow.clip),
-              ),
-            ],
+          leading: SingleChildScrollView(
+            child: Row(
+              children: [
+                Icon(Icons.person),SizedBox(width: 10,),
+                Flexible(
+                  child: Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text(username,overflow: TextOverflow.ellipsis,),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         body: Column(

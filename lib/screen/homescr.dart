@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/userprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/controller/provider.dart';
 
@@ -12,12 +13,21 @@ class ClientScreen extends StatefulWidget {
 class ClientState extends State<ClientScreen> {
   @override
   Widget build(BuildContext context) {
+     final userProvider = Provider.of<UserProvider>(context);
+
     final clientProvider = Provider.of<ClientProvider>(context);
     final TextEditingController _searchController = TextEditingController();
     final FocusNode _focusNode = FocusNode();
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(  leading: Row(
+          children: [
+            Icon(Icons.person),
+            Flexible(
+              child: Text(userProvider.username, overflow: TextOverflow.clip),
+            ),
+          ],
+        ),
         title: Text('Client Screen'),
       ),
       body: Column(
