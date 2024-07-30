@@ -1,117 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/controller/userprovider.dart';
-// import 'package:provider/provider.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// class ChatScreen extends StatefulWidget {
-//   @override
-//   _ChatScreenState createState() => _ChatScreenState();
-// }
-
-// class _ChatScreenState extends State<ChatScreen> {
-//   final TextEditingController _messageController = TextEditingController();
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final userProvider = Provider.of<UserProvider>(context);
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Community Chat'),
-//         leading: Row(
-//           children: [
-//             Icon(Icons.person),
-//             Flexible(
-//               child: Text(userProvider.username, overflow: TextOverflow.clip),
-//             ),
-//           ],
-//         ),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.logout),
-//             onPressed: () async {
-//               await _auth.signOut();
-//               Navigator.pop(context);
-//             },
-//           ),
-//         ],
-//       ),
-//       body: Column(
-//         children: [
-//           Expanded(
-//             child: StreamBuilder(
-//               stream: FirebaseFirestore.instance
-//                   .collection('community_chat') // Adjust the collection name as needed
-//                   .orderBy('timestamp')
-//                   .snapshots(),
-//               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//                 if (!snapshot.hasData) {
-//                   return Center(child: CircularProgressIndicator());
-//                 }
-//                 var messages = snapshot.data!.docs;
-//                 return ListView.builder(
-//                   itemCount: messages.length,
-//                   itemBuilder: (context, index) {
-//                     var message = messages[index];
-//                     return ListTile(
-//                       title: Text(message['sender']),
-//                       subtitle: Text(message['text']),
-//                       trailing: Text(
-//                         message['timestamp'] != null
-//                             ? (message['timestamp'] as Timestamp).toDate().toString()
-//                             : '',
-//                         style: TextStyle(fontSize: 10, color: Colors.grey),
-//                       ),
-//                     );
-//                   },
-//                 );
-//               },
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: TextField(
-//                     controller: _messageController,
-//                     decoration: InputDecoration(hintText: 'Send a message...'),
-//                   ),
-//                 ),
-//                 IconButton(
-//                   icon: Icon(Icons.send),
-//                   onPressed: _sendMessage,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   void _sendMessage() async {
-//     if (_messageController.text.isNotEmpty) {
-//       User? user = _auth.currentUser;
-//       if (user != null) {
-//         try {
-//           await FirebaseFirestore.instance
-//               .collection('community_chat') // Adjust the collection name as needed
-//               .add({
-//             'text': _messageController.text,
-//             'sender': user.email ?? 'Anonymous',
-//             'timestamp': FieldValue.serverTimestamp(),
-//           });
-//           _messageController.clear();
-//         } catch (e) {
-//           print('Error sending message: $e');
-//         }
-//       }
-//     }
-//   }
-// }
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/userprovider.dart';
@@ -137,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Row(
           children: [
             Icon(Icons.person),
@@ -169,18 +55,48 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     var message = messages[index];
-                    return ListTile(
-                      title: Text(message['sender']),
-                      subtitle: message['imageUrl'] != null
-                          ? Image.network(message['imageUrl'])
-                          : Text(message['text']),
-                      trailing: Text(
-                        message['timestamp'] != null
-                            ? (message['timestamp'] as Timestamp)
-                                .toDate()
-                                .toString()
-                            : '',
-                        style: TextStyle(fontSize: 10, color: Colors.grey),
+                    bool isMe = message['sender'] == userProvider.username;
+                    Map<String, dynamic>? reactions = (message.data() as Map<String, dynamic>)['reactions'] as Map<String, dynamic>?;
+
+                    return GestureDetector(
+                      onLongPress: () {
+                        _showReactionOptions(message.id, userProvider.username);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: isMe ? Colors.blue[100] : Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                message['sender'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: isMe ? Colors.blue : Colors.grey[700],
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              message['imageUrl'] != null
+                                  ? Image.network(message['imageUrl'])
+                                  : Text(message['text']),
+                              SizedBox(height: 5),
+                              Text(
+                                message['timestamp'] != null
+                                    ? (message['timestamp'] as Timestamp).toDate().toString()
+                                    : '',
+                                style: TextStyle(fontSize: 10, color: Colors.grey),
+                              ),
+                              SizedBox(height: 5),
+                              _buildReactions(reactions),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -224,6 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
           'sender': userProvider.username,
           'timestamp': FieldValue.serverTimestamp(),
           'imageUrl': null,
+          'reactions': {},
         });
         _messageController.clear();
       } catch (e) {
@@ -254,6 +171,7 @@ class _ChatScreenState extends State<ChatScreen> {
           'sender': userProvider.username,
           'timestamp': FieldValue.serverTimestamp(),
           'imageUrl': imageUrl,
+          'reactions': {},
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Image upload successful!')),
@@ -271,5 +189,82 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     }
   }
-}
 
+  void _showReactionOptions(String messageId, String username) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.thumb_up),
+                title: Text('Like'),
+                onTap: () {
+                  _addReaction(messageId, 'like', username);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text('Love'),
+                onTap: () {
+                  _addReaction(messageId, 'love', username);
+                  Navigator.of(context).pop();
+                },
+              ),
+              // Add more reactions here if needed
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _addReaction(String messageId, String reactionType, String username) async {
+    DocumentReference messageRef = FirebaseFirestore.instance.collection('community_chat').doc(messageId);
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot messageSnapshot = await transaction.get(messageRef);
+      if (!messageSnapshot.exists) {
+        throw Exception("Message does not exist!");
+      }
+
+      Map<String, dynamic> messageData = messageSnapshot.data() as Map<String, dynamic>;
+      Map<String, dynamic> reactions = messageData['reactions'] ?? {};
+      List<dynamic> reactionUsers = reactions[reactionType] ?? [];
+
+      if (reactionUsers.contains(username)) {
+        reactionUsers.remove(username);
+      } else {
+        reactionUsers.add(username);
+      }
+
+      reactions[reactionType] = reactionUsers;
+
+      transaction.update(messageRef, {'reactions': reactions});
+    });
+  }
+
+  Widget _buildReactions(Map<String, dynamic>? reactions) {
+    if (reactions == null || reactions.isEmpty) return Container();
+
+    List<Widget> reactionWidgets = [];
+    reactions.forEach((reactionType, users) {
+      if (users.isNotEmpty) {
+        reactionWidgets.add(Row(
+          children: [
+            Icon(
+              reactionType == 'like' ? Icons.thumb_up : Icons.favorite,
+              size: 16,
+            ),
+            SizedBox(width: 4),
+            Text(users.length.toString()),
+          ],
+        ));
+      }
+    });
+
+    return Row(children: reactionWidgets);
+  }
+}

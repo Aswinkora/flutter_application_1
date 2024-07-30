@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controller/userprovider.dart';
 import 'package:flutter_application_1/firebase_options.dart';
+import 'package:flutter_application_1/screen/noification.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_1/controller/provider.dart';
@@ -11,6 +12,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
+    // NotificationService().init();
+
   runApp(MyApp());
 }
 
