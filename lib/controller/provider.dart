@@ -10,9 +10,12 @@ class ClientProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> fetchItems() async {
-    _isLoading = true;
+    Future.microtask(() {
+      _isLoading = true;
     notifyListeners();
 
+    });
+    
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('items').get();

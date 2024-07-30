@@ -137,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Row(
           children: [
             Icon(Icons.person),
@@ -170,19 +170,37 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     var message = messages[index];
                     return ListTile(
-                      title: Text(message['sender']),
-                      subtitle: message['imageUrl'] != null
-                          ? Image.network(message['imageUrl'])
-                          : Text(message['text']),
-                      trailing: Text(
-                        message['timestamp'] != null
-                            ? (message['timestamp'] as Timestamp)
-                                .toDate()
-                                .toString()
-                            : '',
-                        style: TextStyle(fontSize: 10, color: Colors.grey),
-                      ),
-                    );
+                        title: Text(message['sender']),
+                        subtitle: message['imageUrl'] != null
+                            ? Image.network(message['imageUrl'])
+                            : Text(message['text']),
+                        trailing: Text(
+                          message['timestamp'] != null
+                              ? (message['timestamp'] as Timestamp)
+                                  .toDate()
+                                  .toString()
+                              : '',
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                        ),
+                        onLongPress: () {
+                          if (message['sender'] == userProvider.username) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Delete'),
+                                    content: Text('Delete the message'),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            delete(message.id);
+                                          },
+                                          child: Text('ok'))
+                                    ],
+                                  );
+                                });
+                          }
+                        });
                   },
                 );
               },
@@ -271,5 +289,20 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     }
   }
-}
 
+  void delete(String messageId) {
+    try {
+      FirebaseFirestore.instance
+          .collection('community_chat')
+          .doc(messageId)
+          .delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Message deleted')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete message: $e')),
+      );
+    }
+  }
+}
