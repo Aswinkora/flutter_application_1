@@ -74,12 +74,24 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                message['sender'],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: isMe ? Colors.blue : Colors.grey[700],
-                                ),
+                              Row(
+                                mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                                children: [
+                                  if (isMe)
+                                    IconButton(
+                                      icon: Icon(Icons.delete, color: Colors.red),
+                                      onPressed: () {
+                                        _deleteMessage(message.id);
+                                      },
+                                    ),
+                                  Text(
+                                    message['sender'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: isMe ? Colors.blue : Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 5),
                               message['imageUrl'] != null
@@ -244,6 +256,19 @@ class _ChatScreenState extends State<ChatScreen> {
 
       transaction.update(messageRef, {'reactions': reactions});
     });
+  }
+
+  void _deleteMessage(String messageId) async {
+    try {
+      await FirebaseFirestore.instance.collection('community_chat').doc(messageId).delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Message deleted')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete message: $e')),
+      );
+    }
   }
 
   Widget _buildReactions(Map<String, dynamic>? reactions) {

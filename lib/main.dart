@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
         ),
-        home: Frontscreen(), // Set Frontscreen as the initial screen
+        home: Frontscreen(), 
+        debugShowCheckedModeBanner: false,// Set Frontscreen as the initial screen
       ),
     );
   }
