@@ -9,14 +9,13 @@ class ClientProvider with ChangeNotifier {
   List<DocumentSnapshot> get items => _filteredItems;
   bool get isLoading => _isLoading;
 
-  ClientProvider() {
-    fetchItems();
-  }
-
   Future<void> fetchItems() async {
-    _isLoading = true;
+    Future.microtask(() {
+      _isLoading = true;
     notifyListeners();
 
+    });
+    
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('items').get();
