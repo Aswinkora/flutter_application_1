@@ -299,7 +299,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
       prefs.setBool('isLoggedIn', true);
       prefs.setString('username', user);
 
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => Terms(username: user),
         ),

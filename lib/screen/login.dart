@@ -97,7 +97,7 @@ class _LoginState extends State<Login> {
       prefs.setString('username', user.username);
       
       Provider.of<UserProvider>(context, listen: false).setUsername(user.username);
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => Terms(username: user.username),

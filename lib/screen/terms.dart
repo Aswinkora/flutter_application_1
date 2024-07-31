@@ -66,6 +66,25 @@ class Terms extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Container(
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SingleChildScrollView(
+                child: Text(
+                  'Onam is a cultural festival celebrated in Kerala, India. It is also a harvest festival, and falls on the 22nd nakshatra.\n\n'
+                  'Terms and Conditions:\n\n'
+                  '1. If users abuse your website or mobile app in any way you can terminate their account.\n\n'
+                  '2. If users can post content on your website or mobile app you can remove any content they created if it infringes copyright.\n\n'
+                  '3. If you sell products or services, you could cancel specific orders if a product price is incorrect.',
+                  style: GoogleFonts.lato(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
               width: 200,
               height: 50,
               decoration: BoxDecoration(

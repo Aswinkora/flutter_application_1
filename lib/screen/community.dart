@@ -66,6 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                         child: Container(
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: isMe ? Colors.blue[100] : Colors.grey[300],
