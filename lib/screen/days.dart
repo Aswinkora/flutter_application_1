@@ -483,9 +483,11 @@ class _DaysState extends State<Days> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
   }
 
   @override
@@ -493,21 +495,21 @@ class _DaysState extends State<Days> {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Icon(Icons.person),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                 userProvider. username,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 16),
-                ),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                userProvider.username,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 16),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
       body: Container(
         color: Colors.transparent,
         width: MediaQuery.of(context).size.width,
@@ -543,7 +545,10 @@ class _DaysState extends State<Days> {
                               );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(uploaded ? 'Already uploaded' : 'NOT ALLOWED')),
+                                SnackBar(
+                                    content: Text(uploaded
+                                        ? 'Already uploaded'
+                                        : 'NOT ALLOWED')),
                               );
                             }
                           },

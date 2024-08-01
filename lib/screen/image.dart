@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/controller/phoneprovi.dart';
 import 'package:flutter_application_1/controller/userprovider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,9 +32,10 @@ class _ImagescreenState extends State<Imagescreen> {
           });
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => UploadScreen(
+                
                     image: File(image.path),
                     selectedDate: widget.selectedDate,
-                          username: Provider.of<UserProvider>(context, listen: false).username,
+                          username: Provider.of<UserProvider>(context, listen: false).username, 
 
                   )));
         }

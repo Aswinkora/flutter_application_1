@@ -7,7 +7,7 @@ import 'package:flutter_application_1/screen/login.dart';
 class Terms extends StatelessWidget {
   final String username;
 
-  const Terms({super.key, required this.username});
+  const Terms({super.key, required this.username, });
 
   @override
   Widget build(BuildContext context) {
